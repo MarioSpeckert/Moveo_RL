@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+
+
+<robot name="cube"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <link name="my_box">
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="0.01" />
+      <inertia  ixx="0.01" ixy="0.01"  ixz="0.01"  iyy="0.01"  iyz="0.01"  izz="0.01" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.2" />
+      </geometry>
+    </visual>
+     <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.2" />
+      </geometry>
+    </collision> 
+  </link>
+  <gazebo reference="my_box">
+      <material> Gazebo/Red  </material> 
+      <mu> 0.01</mu>
+      <mu2> 0.01</mu2>
+  </gazebo>
+</robot>

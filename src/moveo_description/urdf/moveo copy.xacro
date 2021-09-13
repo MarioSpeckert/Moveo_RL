@@ -1,0 +1,446 @@
+<?xml version="1.0" ?>
+
+<!-- 
+<<  ===============================================================================  >> 
+    URDF for BCN3D MOVEO created by: Nils-Christian Iseke   
+    
+    If anything is unclear feel free to reach out via mail.
+    mail: nils.iseke@gmail.com 
+
+    The inertia for the links were calculated with the help of Autodesk Inventor, assumed a homogeneous mass distribution
+    For the endeffector the values led to a collapsed model, therefore they were replaced.
+
+-->
+
+<robot name="moveo_description" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+
+<!-- Include xacro Definitions -->
+    <xacro:include filename="$(find moveo_description)/urdf/links_joints.xacro"/>
+
+    
+    <xacro:property name="path_to_meshes" value="package://moveo_description/meshes" />
+
+
+<!-- Fix the Robot to the world=========================== -->
+    
+    
+    <link name="world"/>
+
+    
+    <xacro:m_link_mesh name="base_link"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Base.stl"
+        meshfile_collision= "${path_to_meshes}/Base_col.stl"
+        mass="0.627"
+        origin_xyz_inertia ="0.041976 0 0.039504 "
+        ixx="0.001182303"					
+        iyy="0.003819457"
+        izz="0.004533716"
+        ixy="3E-09"
+        ixz="0.000182631"
+        iyz="-2E-09"
+    />
+
+
+    <xacro:m_joint_fixed name= "odom_joint"
+        origin_xyz= "0 0 0"
+        origin_rpy="0 0 0"
+        parent="world"
+        child="base_link"
+
+    />
+
+  
+    <xacro:m_link_mesh name="Link_1"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Link_1.stl"
+        meshfile_collision= "${path_to_meshes}/Link_1_col.stl"
+        origin_xyz_inertia ="0.000106 -0.000266 0.067055"
+        mass="2.795"
+        ixx="0.005325479"					
+        iyy="0.023922827"
+        izz="0.021671672"
+        ixy="4.742E-06"
+        ixz="8.46E-07"
+        iyz="1.6655E-05"
+    />
+ 
+    <xacro:m_joint name= "Joint_1"
+        type="revolute"
+        origin_xyz= "0 0 0.067"
+        origin_rpy="0 0 0"
+        axis_xyz="0 0 1"
+        parent="base_link"
+        child="Link_1"
+        limit_l="-2.35619"
+        limit_u="2.35619"
+        limit_v="5"
+        limit_e="5"
+        mechanical_reduction="158/15"
+    />
+        <!-- limit_e="0.65" -->
+    
+
+    <xacro:m_link_mesh name="Link_2"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Link_2.stl"
+        meshfile_collision= "${path_to_meshes}/Link_2_col.stl"
+        origin_xyz_inertia ="-0.007195 0.000621 0.078409"
+        mass="1.201"
+        ixx="0.007445752"					
+        iyy="0.008027708"
+        izz="0.0019065"
+        ixy="-2.6909E-05"
+        ixz="0.000221379"
+        iyz="-5.5543E-05"
+    />
+				
+
+    <xacro:m_joint name= "Joint_2"
+        type="revolute"
+        origin_xyz= "0 0 0.1655"
+        origin_rpy="0 0 0"
+        axis_xyz="1 0 0"
+        parent="Link_1"
+        child="Link_2"
+        limit_l="-2.35619"
+        limit_u="2.35619"
+        limit_v="5"
+        limit_e="5"
+        mechanical_reduction="40/7"
+    />
+    <!-- limit_e="3.8" -->
+
+
+   <xacro:m_link_mesh name="Link_3"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Link_3.stl"
+        meshfile_collision= "${path_to_meshes}/Link_3_col.stl"
+        mass="0.633"
+         origin_xyz_inertia ="-0.000254 -0.000043  0.054748"
+        ixx="0.001452189"					
+        iyy="0.001433576"
+        izz="0.00041578"
+        ixy="1.91E-07"
+        ixz="9.87E-07"
+        iyz="-7.89E-07"
+    />
+    					
+
+     <xacro:m_joint name= "Joint_3"
+        type="revolute"
+        origin_xyz= "0 0 0.221124"
+        origin_rpy=" 0 0 0"
+        axis_xyz="1 0 0"
+        parent="Link_2"
+        child="Link_3"
+        limit_l="-2.35619"
+        limit_u="2.35619"
+        limit_v="5"
+        limit_e="5"
+        mechanical_reduction="5*95/21"
+    />
+    <!-- limit_e="0.25" -->
+    
+    
+    <xacro:m_link_mesh name="Link_4"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Link_4.stl"
+        meshfile_collision= "${path_to_meshes}/Link_4_col.stl"
+        mass="0.492"
+        origin_xyz_inertia ="0.007695  0.001112  0.053727"
+        ixx="0.000587127"					
+        iyy="0.000877356"
+        izz="0.000443178"
+        ixy="1.1541E-05"
+        ixz="6.4079E-05"
+        iyz="4.537E-06"
+    />
+					
+
+    <xacro:m_joint name= "Joint_4"
+        type="revolute"
+        origin_xyz= "0 0 0.1275"
+        origin_rpy="0 0 0"
+        axis_xyz="0 0 1"
+        parent="Link_3"
+        child="Link_4"
+        limit_l="-3.14"
+        limit_u="3.14"
+        limit_v="5"
+        limit_e="5"
+        mechanical_reduction="1"
+    />
+   <!-- limit_e="0.26" -->
+  
+
+    <xacro:m_link_mesh name="Link_5"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Link_5.stl"
+        meshfile_collision= "${path_to_meshes}/Link_5_col.stl"
+        mass="0.073"
+        origin_xyz_inertia ="0.000534   0  0.003726"
+        ixx="4.1526E-05"					
+        iyy="3.9921E-05"
+        izz="3.4753E-05"
+        ixy="0"
+        ixz="-1.81E-07"
+        iyz="0"
+    />
+
+    
+    <xacro:m_joint name= "Joint_5"
+        type="revolute"
+        origin_xyz= "0 0 0.095"
+        origin_rpy="0 0 0"
+        axis_xyz="1 0  0"
+        parent="Link_4"
+        child="Link_5"
+        limit_l="-2.35619"
+        limit_u="2.35619"
+        limit_v="5"
+        limit_e="5"
+        mechanical_reduction="14/3"
+    />
+    	<!-- limit_e="0.18"	 -->
+
+
+<!-- ENDEFFECTOR====================================== -->
+<!-- Not for all links the ineria are the calculated one, because this led to failures in Gazebo -->
+
+
+     <xacro:m_link_mesh name="Endeffector_Base"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Base_Endeffektor.stl"
+        meshfile_collision= "${path_to_meshes}/Base_Endeffektor.stl"
+        mass="0.222"
+        origin_xyz_inertia ="0.002106 0.02106 0.022049"
+        ixx="2.8064E-05"					
+        iyy="1.7627E-05"
+        izz="2.8786E-05"
+        ixy="-2.005E-06"
+        ixz="-2.47E-07"
+        iyz="-2.423E-06"
+    />
+
+
+     <xacro:m_joint_fixed name= "Joint_Endeffector_Base"
+        origin_xyz= "0 0 0.041"
+        origin_rpy="0 0 0"
+        parent="Link_5"
+        child="Endeffector_Base"
+
+    />
+					
+
+    <xacro:m_link_mesh name="Servo_Arm_Gear"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Servo_Gear.stl"
+        meshfile_collision= "${path_to_meshes}/Servo_Gear.stl"
+        mass="0.002391"
+        origin_xyz_inertia ="0.000396 0 0.006595"
+        ixx="0.000466195"					
+        iyy="0.00056401"
+        izz="0.000111803"
+        ixy="0"
+        ixz="8.252E-06"
+        iyz="0"
+    />
+    
+   <xacro:m_joint name= "Joint_Servo_Arm_Gear"
+        type="revolute"
+        origin_xyz= "0.014 0 0.024"
+        origin_rpy="0 0 0"
+        axis_xyz="0 1 0"
+        parent="Endeffector_Base"
+        child="Servo_Arm_Gear"
+        limit_l="0"
+        limit_u="1.5707"
+        limit_v="5"
+        limit_e="5"
+    />
+     <!-- limit_e="0.08" -->
+
+
+    <xacro:m_link_mesh name="Gripper_Servo"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Gripper_Right.stl"
+        meshfile_collision= "${path_to_meshes}/Gripper_Right.stl"
+        mass="0.008"
+        origin_xyz_inertia ="-0.005681 0.000349 0.021391"
+        ixx="3.081E-06"					
+        iyy="2.997E-06"
+        izz="4.57E-07"
+        ixy="-6E-09"
+        ixz="5.35E-07"
+        iyz="3.3E-08"
+    />
+    
+    
+    
+    <xacro:m_joint_mimic name= "Joint_Gripper_Servo"
+        origin_xyz= "0 0 0.04"
+        origin_rpy="0 0 0"
+        axis_xyz="0 1 0"
+        parent="Servo_Arm_Gear"
+        child="Gripper_Servo"
+        mimic_joint="Joint_Servo_Arm_Gear" 
+        mimic_multiplier="-1" 
+        mimic_offset="0"
+    />
+  
+
+    <xacro:mimic_joint_plugin_gazebo name_prefix="Joint_Gripper_Servo"
+        parent_joint="Joint_Servo_Arm_Gear" mimic_joint="Joint_Gripper_Servo"
+        has_pid="false" multiplier="-1.0" max_effort="10.0" />
+
+
+   <xacro:m_link_mesh name="Idol_Arm_Gear"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Idol_Gear.stl"
+        meshfile_collision= "${path_to_meshes}/Idol_Gear.stl"
+        mass="0.002453"
+        origin_xyz_inertia ="-0.000407 0 0.006453"
+        ixx="0.001"					
+        iyy="0.001"
+        izz="0.001"
+        ixy="0"
+        ixz="0"
+        iyz="0"
+    /> 
+     
+
+    <xacro:m_joint_mimic name= "Joint_Idol_Arm_Gear"
+        origin_xyz= "-0.014 0 0.024"
+        origin_rpy="0 0 0"
+        axis_xyz="0 1 0"
+        parent="Endeffector_Base"
+        child="Idol_Arm_Gear" 
+        mimic_joint="Joint_Servo_Arm_Gear" 
+        mimic_multiplier="-1" 
+        mimic_offset="0"  
+    />
+
+
+    <xacro:mimic_joint_plugin_gazebo name_prefix="Joint_Idol_Arm_Gear"
+        parent_joint="Joint_Servo_Arm_Gear" mimic_joint="Joint_Idol_Arm_Gear"
+        has_pid="false" multiplier="-1.0" max_effort="10.0" />
+     					
+
+    <xacro:m_link_mesh name="Gripper_Idol"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Gripper_Left.stl"
+        meshfile_collision= "${path_to_meshes}/Gripper_Left.stl"
+        mass="0.008"
+        origin_xyz_inertia ="0.005681  0.000349 0.021391"
+        ixx="0.001"					
+        iyy="0.001"
+        izz="0.001"
+        ixy="0"
+        ixz="0"
+        iyz="0"
+    />
+   
+   
+
+    <xacro:m_joint_mimic name= "Joint_Gripper_Idol"
+        origin_xyz="0 0 0.04"
+        origin_rpy="0 0 0"
+        axis_xyz="0 1 0"
+        parent="Idol_Arm_Gear"
+        child="Gripper_Idol"
+        mimic_joint="Joint_Servo_Arm_Gear"
+        mimic_multiplier="1"
+        mimic_offset="0"
+    />
+      
+    <xacro:mimic_joint_plugin_gazebo name_prefix="Joint_Gripper_Idol"
+        parent_joint="Joint_Servo_Arm_Gear" mimic_joint="Joint_Gripper_Idol"
+        has_pid="false" multiplier="1.0" max_effort="10.0" />
+
+
+
+    <xacro:m_link_mesh name="Servo_Arm_Pivot"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Pivot_Arm.stl"
+        meshfile_collision= "${path_to_meshes}/Pivot_Arm.stl"
+        mass="0.001638"
+        origin_xyz_inertia ="0.005681  0.000349 0.021391"
+        ixx="0.001"					
+        iyy="0.001"
+        izz="0.001"
+        ixy="0"
+        ixz="0"
+        iyz="0"
+    />
+  
+ 
+  <xacro:m_joint_mimic name= "Joint_Servo_Arm_Pivot"
+        origin_xyz="0.007 0 0.044"
+        origin_rpy="0 0 0"
+        axis_xyz="0 1 0"
+        parent="Endeffector_Base"
+        child="Servo_Arm_Pivot"
+        mimic_joint="Joint_Servo_Arm_Gear"
+        mimic_multiplier="1"
+        mimic_offset="0"
+    /> 
+
+
+    <xacro:mimic_joint_plugin_gazebo name_prefix="Joint_Servo_Arm_Pivot"
+        parent_joint="Joint_Servo_Arm_Gear" mimic_joint="Joint_Servo_Arm_Pivot"
+        has_pid="false" multiplier="1.0" max_effort="10.0" />
+
+      
+    <xacro:m_link_mesh name="Idol_Arm_Pivot"
+        origin_xyz="0 0 0"
+        origin_rpy="0 0 0"
+        meshfile_visual= "${path_to_meshes}/Pivot_Arm.stl"
+        meshfile_collision= "${path_to_meshes}/Pivot_Arm.stl"
+        mass="0.001638"
+        origin_xyz_inertia ="0.005681  0.000349 0.021391"
+        ixx="0.001"					
+        iyy="0.001"
+        izz="0.001"
+        ixy="0"
+        ixz="0"
+        iyz="0"
+    />
+    
+    
+    <xacro:m_joint_mimic name= "Joint_Idol_Arm_Pivot"
+        origin_xyz="-0.007 0 0.044"
+        origin_rpy="0 0 0"
+        axis_xyz="0 1 0"
+        parent="Endeffector_Base"
+        child="Idol_Arm_Pivot"
+        mimic_joint="Joint_Servo_Arm_Gear"
+        mimic_multiplier="-1"
+        mimic_offset="0"
+    /> 
+     
+     
+    <xacro:mimic_joint_plugin_gazebo name_prefix="Joint_Idol_Arm_Pivot"
+        parent_joint="Joint_Servo_Arm_Gear" mimic_joint="Joint_Idol_Arm_Pivot"
+        has_pid="false" multiplier="-1.0" max_effort="10.0" /> 
+ 
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
+    </gazebo>
+
+
+</robot>

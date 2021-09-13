@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+
+
+<robot name="cube"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+     <xacro:include filename="$(find moveo_description)/urdf/links_joints.xacro"/>
+    <xacro:m_link_box
+        name="box"
+        origin_xyz ="0 0 0"
+        origin_rpy = "0 0 0"
+        size="0.2 0.2 0.2"
+        mass = "5"
+        ixx ="1.05"
+        iyy = "1.05"
+        izz = "1.05"
+        ixy = "0"
+        ixz = "0"
+        iyz = "0"
+    />
+    <gazebo reference="box">
+      <material>Gazebo/Red</material> 
+  </gazebo>
+</robot>

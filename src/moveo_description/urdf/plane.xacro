@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+
+
+<robot name="plane"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+ <xacro:include filename="$(find moveo_description)/urdf/links_joints.xacro"/>
+    <link name="world"/>
+    <xacro:m_joint_fixed name= "odom_joint"
+        origin_xyz= "0 0 0"
+        origin_rpy="0 0 0"
+        parent="world"
+        child="cylinder"
+
+    />
+
+    
+    <xacro:m_link_cylinder
+        name="cylinder"
+        origin_xyz ="0 0 -0.005"
+        origin_rpy = "0 0 0"
+        radius="0.5"
+        length="0.01"
+        mass = "5"
+        ixx ="1.05"
+        iyy = "1.05"
+        izz = "1.05"
+        ixy = "0"
+        ixz = "0"
+        iyz = "0"
+    />
+    <gazebo reference="plane">
+      <material>Gazebo/Red</material> 
+      <mu>0.01</mu>
+      <mu2>0.01</mu2>
+  </gazebo>
+</robot>

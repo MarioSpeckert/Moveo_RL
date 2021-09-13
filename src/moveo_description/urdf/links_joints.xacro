@@ -1,0 +1,155 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+<!-- https://bitbucket.org/theconstructcore/my-robotic-manipulator/src/master/urdf/links_joints.xacro -->
+
+  <!-- Xacro definition of a joint -->
+  <xacro:macro name="m_joint" params="name type axis_xyz origin_rpy origin_xyz parent child limit_e limit_l limit_u limit_v mechanical_reduction:='1' passive:='' mimic_joint:='' mimic_multiplier:=1 mimic_offset:=0  passive_joint:=''">
+    <joint name="${name}" type="${type}">
+      <axis xyz="${axis_xyz}" />
+      <limit effort="${limit_e}" lower="${limit_l}" upper="${limit_u}" velocity="${limit_v}" />
+      <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+      <parent link="${parent}" />
+      <child link="${child}" />
+      <xacro:if value ="${mimic_joint !=''}">
+        <mimic joint="${mimic_joint}" multiplier="${mimic_multiplier}" offset="${mimic_offset}" />
+      </xacro:if>
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <xacro:if value ="${passive !='passive'}">
+      <transmission name="trans_${name}">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${name}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor_${name}">
+          <!-- <hardwareInterface>PositionJointInterface</hardwareInterface> -->
+          <mechanicalReduction>${mechanical_reduction}</mechanicalReduction>
+        </actuator>
+      </transmission>
+     </xacro:if> 
+    
+  </xacro:macro>
+
+
+<!-- Xacro definition of a mimic joint -->
+<xacro:macro name="m_joint_mimic" params="name axis_xyz origin_rpy origin_xyz parent child mechanical_reduction:='1' mimic_joint:='' mimic_multiplier:=1 mimic_offset:=0  ">
+    <joint name="${name}" type="continuous">
+      <axis xyz="${axis_xyz}" />
+      <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+      <parent link="${parent}" />
+      <child link="${child}" />
+      <mimic joint="${mimic_joint}" multiplier="${mimic_multiplier}" offset="${mimic_offset}" />
+    </joint>
+</xacro:macro>
+
+
+<!-- Xacro definition of a fixed joint -->
+<xacro:macro name="m_joint_fixed" params="name origin_rpy origin_xyz parent child ">
+    <joint name="${name}" type="fixed">
+      <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+      <parent link="${parent}" />
+      <child link="${child}" />
+    </joint>
+</xacro:macro>
+
+
+<!-- Xacro definition of a link -->
+<xacro:macro name="m_link_mesh" params="name origin_xyz origin_rpy origin_rpy_inertia:='0 0 0' origin_xyz_inertia:='0 0 0' meshfile_visual meshfile_collision mass ixx ixy ixz iyy iyz izz">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy_inertia}" xyz="${origin_xyz_inertia}" />
+        <inertia  ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}" />
+      </inertial>
+      <collision>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <mesh filename="${meshfile_collision}"/>
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <mesh filename="${meshfile_visual}"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      
+    </link>
+  </xacro:macro>
+
+
+<!-- Xacro definition of the mimic joint plugin -->
+<xacro:macro name="mimic_joint_plugin_gazebo" params="name_prefix parent_joint mimic_joint has_pid:=false multiplier:=1.0 offset:=0 sensitiveness:=0.0 max_effort:=1.0 robot_namespace:=''">
+    <gazebo>
+      <plugin name="${name_prefix}mimic_joint_plugin" filename="libroboticsgroup_gazebo_mimic_joint_plugin.so">
+        <joint>${parent_joint}</joint>
+        <mimicJoint>${mimic_joint}</mimicJoint>
+        <xacro:if value="${has_pid}">                     <!-- if set to true, PID parameters from "/gazebo_ros_control/pid_gains/${mimic_joint}" are loaded -->
+          <hasPID />
+        </xacro:if>
+        <multiplier>${multiplier}</multiplier>
+        <offset>${offset}</offset>
+        <sensitiveness>${sensitiveness}</sensitiveness>   <!-- if absolute difference between setpoint and process value is below this threshold, do nothing; 0.0 = disable [rad] -->
+        <maxEffort>${max_effort}</maxEffort>              <!-- only taken into account if has_pid:=true [Nm] -->
+        <xacro:unless value="${robot_namespace == ''}">
+          <robotNamespace>${robot_namespace}</robotNamespace>
+        </xacro:unless>
+      </plugin>
+    </gazebo>
+      <!-- <gazebo reference ="${name_prefix}mimic_joint_plugin">
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
+        <implicitSpringDamper></implicitSpringDamper>
+        </gazebo> -->
+</xacro:macro>
+
+
+<!-- Xacro definition of a box -->
+<xacro:macro name="m_link_box" params="name origin_xyz origin_rpy size mass ixx ixy ixz iyy iyz izz">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}" />
+      </inertial>
+      <collision>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <box size="${size}" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <box size="${size}" />
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+
+<!-- Xacro definition of acylinder-->
+  <xacro:macro name="m_link_cylinder" params="name origin_xyz origin_rpy radius length mass ixx ixy ixz iyy iyz izz">
+    <link name="${name}">
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}" />
+      </inertial>
+      <collision>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <cylinder radius="${radius}" length="${length}" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <cylinder radius="${radius}" length="${length}" />
+        </geometry>
+      </visual>
+    </link>
+  </xacro:macro>
+</robot>

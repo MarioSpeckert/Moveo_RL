@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+ <arg name="world_name" default="$(find moveo_moveit_config)/worlds/moveo_IK_world.world"/>
+    <include file="$(find moveo_moveit_config)/launch/demo_gazebo.launch">
+     <arg name="world_name" value="$(arg world_name)"/>
+        <!-- <arg name="rviz_config" value="$(find moveo_moveit_config)/launch/moveit.rviz"/>
+        <arg name="debug" value="$(arg debug)"/> -->
+    </include>
+
+
+ <!-- <param name="robot_description" command="$(find xacro)/xacro '$(find moveo_description)/urdf/moveo.xacro'" />
+
+  push robot_description to factory and spawn robot in gazebo at the origin, change x,y,z arguments to spawn in a different position
+  <node name="spawn_gazebo_model2" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -x 0 -y 0 -z 0"
+    respawn="false" output="screen" /> -->
+
+<param name="cube" command="$(find xacro)/xacro '$(find moveo_description)/urdf/sphere.xacro'" />
+<node name="spawn_gazebo_cube" pkg="gazebo_ros" type="spawn_model" args="-urdf -param cube -model cube -x 0 -y 0.4 -z 0.25"
+    respawn="false" output="screen" />
+    <param name="plane" command="$(find xacro)/xacro '$(find moveo_description)/urdf/plane.xacro'" />
+<node name="spawn_gazebo_plane" pkg="gazebo_ros" type="spawn_model" args="-urdf -param plane -model plane -x 0 -y 0 -z -0.001"
+    respawn="false" output="screen" />
+</launch>

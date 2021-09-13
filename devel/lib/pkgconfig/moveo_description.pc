@@ -1,0 +1,8 @@
+prefix=/home/nils/Documents/moveo_ws/devel
+
+Name: moveo_description
+Description: Description of moveo_description
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
