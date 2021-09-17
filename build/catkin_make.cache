@@ -1,2 +1,0 @@
-moveo_description:moveo_moveit_config:moveo_training:openai_ros/openai_ros:roboticsgroup_gazebo_plugins
--DCATKIN_DEVEL_PREFIX=/home/nils/Documents/moveo_ws/devel -DCMAKE_INSTALL_PREFIX=/home/nils/Documents/moveo_ws/install -G Unix Makefiles
